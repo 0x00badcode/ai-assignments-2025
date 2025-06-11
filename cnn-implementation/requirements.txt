@@ -1,0 +1,7 @@
+numpy>=1.21.0
+pillow>=8.0.0  # For image processing
+scikit-learn>=0.24.0  # For data preprocessing and metrics
+matplotlib>=3.4.0  # For visualization
+tqdm>=4.60.0  # For progress bars
+scipy>=1.7.0  # For FFT-based convolution optimization
+seaborn>=0.11.0  # For enhanced visualizations
