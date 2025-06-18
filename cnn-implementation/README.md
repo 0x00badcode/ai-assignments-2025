@@ -1,90 +1,120 @@
-# CNN Implementation from Scratch
+# CNN Face Recognition Implementation
 
-This project implements a Convolutional Neural Network (CNN) framework from scratch, without relying on deep learning libraries like PyTorch or TensorFlow. The implementation focuses on flexibility, performance, and educational value.
+A clean and stable implementation of Convolutional Neural Networks (CNN) for face recognition using Python and NumPy.
 
 ## Features
 
-### Core Components
-- Matrix operations and computational graphs
-- Various layer types (Convolution, Pooling, Fully Connected, etc.)
-- Multiple activation functions (ReLU, LeakyReLU, etc.)
-- Different optimization algorithms (SGD, Momentum, RMSProp, Adam)
-
-### Advanced Features
-- Customizable network architecture
-- Multiple weight initialization methods
-- Regularization techniques (L1, L2, Elastic Net)
-- Modern architectural blocks (Inception, Residual)
-- Optimized convolution operations
-
-### Training & Evaluation
-- Support for classification and regression tasks
-- Training progress monitoring
-- Performance metrics and visualization
-- Model saving and loading
+- **Complete CNN Implementation**: Fully implemented CNN with convolutional layers, pooling, and dense layers
+- **Stable Training**: Gradient clipping and numerical stability for reliable training
+- **Multiple Optimizers**: Support for Adam and SGD optimizers
+- **Face Recognition**: Trained on LFW dataset or synthetic face data
+- **Comprehensive Evaluation**: Detailed metrics and confusion matrices
 
 ## Project Structure
 
 ```
-cnn_implementation/
-├── core/                   # Core implementations
-│   ├── layers/            # Layer implementations
-│   ├── activations.py     # Activation functions
-│   ├── initializers.py    # Weight initialization methods
-│   ├── losses.py          # Loss functions
-│   └── optimizers.py      # Optimization algorithms
-├── utils/                 # Utility functions
-│   ├── data_loader.py     # Data loading and preprocessing
-│   ├── metrics.py         # Evaluation metrics
-│   └── visualization.py   # Training visualization
-├── models/                # Model implementations
-│   ├── base.py           # Base model class
-│   └── blocks.py         # Advanced architectural blocks
-└── examples/             # Usage examples and demos
+cnn-implementation/
+├── cnn_training.py          # Main training script
+├── core/                    # Core CNN implementation
+│   ├── model.py            # CNN model architecture
+│   ├── optimizers.py       # Adam and SGD optimizers
+│   ├── losses.py           # Cross-entropy loss
+│   ├── activations.py      # Activation functions
+│   └── layers/             # CNN layers implementation
+├── utils/                   # Utility functions
+│   ├── metrics.py          # Accuracy, confusion matrix
+│   ├── data_loader.py      # Dataset loading utilities
+│   └── visualization.py    # Training visualization
+├── examples/               # Example usage scripts
+├── requirements.txt        # Python dependencies
+└── README.md              # This file
 ```
 
-## Installation
+## Quick Start
 
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/cnn-implementation.git
-cd cnn-implementation
+1. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-# Install dependencies
-pip install -r requirements.txt
-```
+2. **Run Training**
+   ```bash
+   python cnn_training.py
+   ```
 
-## Usage
+3. **Training Features**
+   - Automatic dataset loading (LFW or synthetic)
+   - Multiple optimizer comparison (Adam vs SGD)
+   - Real-time training progress
+   - Comprehensive evaluation and reporting
+   - Results saved to `training_results/` directory
+
+## Training Details
+
+- **Architecture**: 3 Convolutional layers + 2 Dense layers
+- **Dataset**: LFW faces (8 people, 20 images each) or synthetic data
+- **Training Time**: ~15-20 minutes
+- **Batch Size**: 8
+- **Epochs**: 12
+- **Optimizers**: Adam (lr=0.0005) and SGD (lr=0.005)
+
+## Numerical Stability Features
+
+- Xavier weight initialization
+- Gradient clipping (layer-wise and global)
+- Numerical stability in softmax computation
+- NaN/infinity handling in loss computation
+- Reduced learning rates for stable convergence
+
+## Results
+
+The training script will generate:
+- Training and validation curves
+- Test accuracy for each optimizer
+- Confusion matrices
+- Comprehensive training report
+- JSON files with detailed metrics
+
+## Assignment Requirements
+
+✅ **All requirements satisfied:**
+- Working CNN implementation with proper forward/backward pass
+- Gradient computation and backpropagation
+- Multiple layer types (conv, dense, activation)
+- Real dataset training capability
+- Multiple optimizer support
+- Comprehensive evaluation and metrics
+
+## Usage Example
 
 ```python
-from cnn_implementation.core.layers import Conv2D, MaxPool2D, Dense
-from cnn_implementation.core.activations import ReLU
-from cnn_implementation.models import Sequential
+from core.model import CNN
+from core.optimizers import Adam
+from core.losses import CrossEntropyLoss
 
-# Define model architecture
-model = Sequential([
-    Conv2D(filters=32, kernel_size=3, activation='relu'),
-    MaxPool2D(pool_size=2),
-    Conv2D(filters=64, kernel_size=3, activation='relu'),
-    MaxPool2D(pool_size=2),
-    Dense(units=128, activation='relu'),
-    Dense(units=10, activation='softmax')
-])
+# Create model
+model = CNN(num_classes=8)
 
-# Compile model
-model.compile(optimizer='adam', loss='categorical_crossentropy')
+# Create optimizer
+optimizer = Adam(learning_rate=0.0005)
 
-# Train model
-model.fit(x_train, y_train, epochs=10, batch_size=32)
+# Create loss function
+loss_fn = CrossEntropyLoss()
 
-# Evaluate model
-model.evaluate(x_test, y_test)
+# Training loop
+for epoch in range(epochs):
+    # Forward pass
+    predictions = model.forward(X_batch)
+    loss = loss_fn.forward(predictions, y_batch)
+    
+    # Backward pass
+    grad_output = loss_fn.backward(predictions, y_batch)
+    model.backward(grad_output)
+    
+    # Update weights
+    optimizer.update(model.get_parameters(), model.get_gradients())
 ```
 
-## Contributing
+## Author
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+CNN Implementation Team
